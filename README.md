@@ -19,14 +19,14 @@ Connect an Android phone to a Windows PC and open the Chrome browser on the phon
 Open `export-android-tabs.ps1` in a text editor (i.e. [Notepad++](https://notepad-plus-plus.org/downloads/)) and modify paths:
 * to the `platform-tools` folder containing `adb.exe`. That's a variable `$pathToADB`
 * to the output folder where to store a file with tabs. That's a variable `$pathToFiles`
-
-Name of the output files can be changed by changing variables `$pathToJsonFile` and `$pathToOutputFile`.
+* (optional) name of the output files: `$pathToJsonFile` and `$pathToOutputFile`
 
 Then save and run the script or copy-paste the script contents to the PowerShell window.
 
+
 After the script is executed, you will get two files:
 
-* A `tabs.json` file with information about all your tabs in a JSON format.
+* A `tabs.json` file with information about all your tabs in a raw JSON format.
 * A `tabs.csv` file you can open in Excel or any other spreadsheet processing software.
 
 
