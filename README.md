@@ -1,6 +1,6 @@
 # export-android-tabs
 
-A PowerShell tool to export open tabs in a Chrome browser on a phone to computer on Windows and convert it to a CSV file.
+A PowerShell tool to export open tabs in a Chrome browser on an Android phone to a computer on Windows. Outputs are JSON and CSV files.
 
 
 ## Prerequisites
