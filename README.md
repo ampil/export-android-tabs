@@ -27,7 +27,7 @@ Then save and run the script or copy-paste the script contents to the PowerShell
 After the script is executed, you will get two files:
 
 * A `tabs.json` file with information about all your tabs in a JSON format.
-* A `tabs.csv` file - a CSV file you can open in Excel or any other table-processing software
+* A `tabs.csv` file you can open in Excel or any other spreadsheet processing software.
 
 
 ## Notes
