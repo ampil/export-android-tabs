@@ -6,7 +6,7 @@
 # with proper encoding:  https://stackoverflow.com/a/66136255
 
 
-# pre-reqiusites: 
+# prereqiusites: 
 # 1) get the ADB - you can do that by downloading and extracting the package from Google [5.84 MB]:  https://developer.android.com/studio/releases/platform-tools
 # 2) USB debugging enabled on your device (no root required)
 
