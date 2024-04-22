@@ -1,6 +1,6 @@
 # export-android-tabs
 
-A PowerShell tool to export open tabs in a Chrome browser on an Android phone to a computer on Windows. Outputs are JSON and CSV files.
+A PowerShell tool to export open tabs in a Chrome browser on an Android phone to a computer on Windows. Output tabs in JSON and CSV formats.
 
 
 ## Prerequisites
@@ -17,8 +17,8 @@ Connect an Android phone to a Windows PC and open the Chrome browser on the phon
 ## Usage
 
 Open `export-android-tabs.ps1` in a text editor (i.e. [Notepad++](https://notepad-plus-plus.org/downloads/)) and modify paths:
-* to the `platform-tools` folder containing `adb.exe`. That's a variable `$pathToADB`
-* to the output folder where to store a file with tabs. That's a variable `$pathToFiles`
+* to the output folder where to store a file with tabs. That's a variable `$outFolder`
+* (optional) path to `adb.exe`. That's a variable `$pathToADB` (_the script downloads it if not found in the location specified_)
 * (optional) name of the output files: `$pathToJsonFile` and `$pathToOutputFile`
 
 Then save and run the script or copy-paste the script contents to the PowerShell window.
@@ -26,8 +26,8 @@ Then save and run the script or copy-paste the script contents to the PowerShell
 
 After the script is executed, you will get two files:
 
-* A `tabs.json` file with information about all your tabs in a raw JSON format.
-* A `tabs.csv` file you can open in Excel or any other spreadsheet processing software.
+* `tabs [datetime].json` file with information about all your tabs in a raw JSON format.
+* `tabs [datetime].csv` file you can open in Excel or any other spreadsheet processing software.
 
 
 ## Notes
@@ -39,4 +39,4 @@ On my phone (Xiaomi 11T), the script is working while the phone is locked. But y
 
 ## Credit
 
-This script was inspired by the this [StackExchange answer and following comments](https://android.stackexchange.com/a/199496).
+This script was inspired by this [StackExchange answer and following comments](https://android.stackexchange.com/a/199496).
