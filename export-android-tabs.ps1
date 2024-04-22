@@ -94,7 +94,7 @@ function getAndroidTabs {
 	if (!(Test-Path $pathToJsonFile)) {
 		Write-Warning "Tabs file ('$nameTabs.json') was not downloaded"
 	} else {
-		((Get-Content -Encoding utf8 -Path $pathToJsonFile -Raw) | ConvertFrom-Json) | Export-CSV $pathToOutputFile -NoTypeInformation -Encoding utf8
+		((Get-Content -Encoding utf8BOM -Path $pathToJsonFile -Raw) | ConvertFrom-Json) | Export-CSV $pathToOutputFile -NoTypeInformation -Encoding utf8BOM
 		
 		Write-Host "Completed. Tabs exported to " $outFolder
 	}
