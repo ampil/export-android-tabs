@@ -1,38 +1,40 @@
+
 # export-android-tabs
 
-`export-android-tabs` is a PowerShell tool to export open tabs in a Chrome browser on an Android phone to a computer on Windows. Saves tabs in JSON and CSV formats.
+`export-android-tabs` is a PowerShell script that exports open tabs from Google Chrome on an Android device to a Windows computer, producing both JSON and CSV outputs for easy analysis in Excel or BI tools.
+
+## Features
+
+* Export currently open Chrome tabs from Android to JSON and CSV on Windows, suitable for spreadsheets and automation pipelines.
+* Automatic download and extraction of Android Platform Tools if not already installed locally; **root is not required**.
+* Graceful error handling when Chrome isn’t open on the device, with a clear prompt to open it and retry.
 
 
 ## Prerequisites
 
-* enabled USB debugging on your Android device
-* Windows computer with PowerShell (installed by default starting with Windows 7 SP1 and Windows Server 2008 R2 SP1)
-* Installed [Google Chrome Browser](https://play.google.com/store/apps/details?id=com.android.chrome) of course
-* _*_ [Android Debug Bridge](https://developer.android.com/studio/releases/platform-tools)
-  (we need the minimal version - the platform tools ~6 Mb. It has the `adb.exe` executable)
-* ! **no** root required !
-
-Connect an Android phone to a Windows PC. While connected you may need to tap "OK" on your phone to make the connection trusted between your PC and the phone.  
-_*_ ADB will be downloaded and extracted during script execution if you don't have it locally.
+* USB debugging enabled on the Android device and the computer marked as trusted when prompted.
+* Windows with PowerShell available (included since Windows 7 SP1 / Windows Server 2008 R2 SP1).
+* [Google Chrome Browser](https://play.google.com/store/apps/details?id=com.android.chrome) open on the device.
+* [Android Debug Bridge (ADB)](https://developer.android.com/studio/releases/platform-tools) from Android Platform Tools (~6 MB). If not found, the script will download it automatically during execution.
 
 
-## Usage
+## Quick start
 
-Open `export-android-tabs.ps1` in a text editor (i.e. [Notepad++](https://notepad-plus-plus.org/downloads/)) and modify paths:
-* to the output folder where to store a file with tabs: variable `$outFolder`
-* (_optional_) path to `adb.exe`: variable `$pathToADB` (_the script downloads it if not found at the location specified_)
-* (_optional_) names of the output files: `$pathToJsonFile` and `$pathToOutputFile`
+1. Connect the Android phone to the Windows PC via USB and ensure Chrome is open on the device.
+2. Open `export-android-tabs.ps1` in an editor and configure:
+    * Output folder: `$outFolder`.
+    * (_optional_) ADB path: `$pathToADB` (the script downloads ADB if not found at the path).
+    * (_optional_) output names: `$pathToJsonFile` and `$pathToOutputFile`.
+3. Run the script in PowerShell (for example, from the script directory): `./export-android-tabs.ps1`.
 
-Then save and run the script and execute it in PowerShell or copy-paste script contents to the PowerShell window.
+## Output
+
+* `tabs [datetime].json`: raw DevTools tab list, including title and url fields.
+* `tabs [datetime].csv`: a flat table suitable for Excel and other spreadsheet software.
 
 
-After the script is executed, you will get two files:
-* `tabs [datetime].json` with information about all your tabs in a raw JSON format.
-* `tabs [datetime].csv` suitable for Excel or any other spreadsheet processing software.
+## Example JSON fields
 
-
-## Example output
-The output in a JSON file has the following fields (with sample values):
 * "description": ""
 * "devtoolsFrontendUrl": "https://chrome-devtools-frontend.appspot.com/serve_internal_file/@6aa76cc02752c25ffead4a19a03e13cdda08db6a/inspector.html?ws=localhost:9223/devtools/page/19939",
 * "id": "19939",
@@ -42,16 +44,25 @@ The output in a JSON file has the following fields (with sample values):
 * "webSocketDebuggerUrl": "ws://localhost:9223/devtools/page/19939"
 ![image](https://github.com/ampil/export-android-tabs/assets/33726853/0766031a-0641-461e-a282-7649601f40ac)
 
-Basically, we need `title` and `url`.
+
+## Encoding notes
+
+The script uses UTF‑8 when reading and writing, ensuring correct handling of umlauts (`ä`, `ö`, `ü`), accents (`é`, `â`, `ê`), and Cyrillic (`привет`) in tab titles and URLs.
+
+## Behavior and device notes
+
+On some devices (e.g., Xiaomi 11T) export may work with the screen locked, but keeping Chrome active on the device generally yields more reliable results.
+
+## Troubleshooting
+
+- Script prints “Chrome should be opened on your device. Is it now?” and exits gracefully:
+    - Open Chrome on the device and rerun the script.
+- Device not listed as “device” in adb devices:
+    - Reconnect USB and confirm the RSA trust prompt on the phone; ensure USB debugging is enabled.
+- CSV looks empty or shows wrong characters:
+    - Verify write access to `$outFolder` and ensure Excel is correctly opening a CSV encoded with UTF-8.
 
 
-## Notes
+## Credits
 
-The script has an `-Encoding utf8` parameter which is critical to properly read UTF8 symbols from the `title` field in the JSON file. These are umlauts `ä ö ü`, accents `é â ê`, cyrillic `привет`, etc.
-
-On my phone (Xiaomi 11T), the script is working while the phone is locked. But you may need to keep it unlocked with active Chrome browser on the screen.
-
-
-## Credit
-
-This script was inspired by this [StackExchange answer and following comments](https://android.stackexchange.com/a/199496).
+Inspired by a StackExchange answer and subsequent discussion; direct references are linked in the script comments.
