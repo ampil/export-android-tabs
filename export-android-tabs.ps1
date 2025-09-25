@@ -82,19 +82,35 @@ function getAndroidTabs {
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	#STAGE 3 - GET TABS FROM THE PHONE
 	#activate adb
+	$success    = $false
 	Write-Host "Activating ADB port forwarding"
 	$params = "forward tcp:$port localabstract:chrome_devtools_remote"
 	$cmd = "& $pathToADB $params | Write-Verbose"   # with '| Write-Verbose' hide output of the command which is '9223'
 	Invoke-Expression $cmd
 
 	# download the list of tabs from the phone as a .json file
-	Invoke-WebRequest -Uri $url -OutFile $pathToJsonFile
+	try {
+		Invoke-WebRequest -Uri $url -OutFile $pathToJsonFile
+		$success = $true
+	} catch {
+        Write-Warning "Attempt failed: $($_.Exception.Message)"
+        Write-Host 'Chrome should be opened on your device. Is it now?' -ForegroundColor Yellow
+    }
+
+	if (-not $success) {
+		# release resources and exit
+		$params = "kill-server"
+		$cmd = "& $pathToADB $params"
+		Invoke-Expression $cmd
+		return
+	}
+
 
 	#convert JSON to CSV with proper encoding for Cyrillic, German, French, etc.
 	if (!(Test-Path $pathToJsonFile)) {
 		Write-Warning "Tabs file ('$nameTabs.json') was not downloaded"
 	} else {
-		((Get-Content -Encoding utf8BOM -Path $pathToJsonFile -Raw) | ConvertFrom-Json) | Export-CSV $pathToOutputFile -NoTypeInformation -Encoding utf8BOM
+		((Get-Content -Encoding utf8 -Path $pathToJsonFile -Raw) | ConvertFrom-Json) | Export-CSV $pathToOutputFile -NoTypeInformation -Encoding utf8
 		
 		Write-Host "Completed. Tabs exported to " $outFolder
 	}
